@@ -1,0 +1,14 @@
+.DS_Store
+*.iml
+.idea/
+**/tests/reports/
+logs/
+*.pyc
+.pytest_cache/
+.coverage
+.eggs/*
+dist/
+*.egg-info/
+venv/
+*.oso
+render/*.exr
