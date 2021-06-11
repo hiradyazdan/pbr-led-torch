@@ -97,16 +97,18 @@ class Renderer:
     Camera
     
     """
-    def _set_camera(self):
+    def _set_camera(self, focal_length = 1, focal_distance = 14, translate = None, rotate = None):
         ri = self.ri
         args = self.args
 
-        ri.Projection(ri.PERSPECTIVE, { ri.FOV: args.fov }) # FOV: 50
-        # ri.DepthOfField(1, 0.1, 3) # TODO: Modify values
+        tr = translate or [0, -1.5, focal_distance - 1]
+        rt = rotate or [-20, 1, 0, 0]
 
-        ri.Translate(0,-1.5,0)
-        ri.Translate(0,0,10)
-        ri.Rotate(-20,1,0,0)
+        ri.Projection(ri.PERSPECTIVE, { ri.FOV: args.fov }) # FOV: 50
+        ri.DepthOfField(focal_length * 2, focal_length, focal_distance)
+
+        ri.Translate(tr[0], tr[1], tr[2])
+        ri.Rotate(rt[0], rt[1], rt[2], rt[3])
 
     def _setup_world(self):
         ri = self.ri
@@ -114,8 +116,10 @@ class Renderer:
         ri.WorldBegin()
         ri.TransformBegin()
 
-        # HDRI Sourced from: https://hdrihaven.com/hdri/?c=urban&h=comfy_cafe
-        self._set_environment_map('comfy_cafe_4k.tex')
+        # HDRI Sourced from:
+        # - https://hdrihaven.com/hdri/?c=urban&h=comfy_cafe
+        # - https://hdrihaven.com/hdri/?c=night&h=fireplace
+        self._set_environment_map('comfy_cafe_4k.tx')
         self._draw_scene()
 
         ri.TransformEnd()
@@ -135,17 +139,13 @@ class Renderer:
         # ri.Declare('domeLight' ,'string')
 
         ri.Rotate(-90, 1, 0, 0)
-        ri.Rotate(100 ,0, 0, 1)
+        ri.Rotate(110, 0, 0, 1)
 
-        ri.Light(
-            'PxrDomeLight',
-            'domeLight',
-            {
-                'string lightColorMap': [env_map_file],
-                'float exposure': [0],
-                'float intensity' : [1.0],
-            }
-        )
+        ri.Light('PxrDomeLight', 'domeLight', {
+            'string lightColorMap': [env_map_file],
+            'float exposure': [0],
+            # 'float intensity' : [1.0],
+        })
         ri.TransformEnd()
         ri.ArchiveRecord(ri.COMMENT, '---- End of Lighting Group ----')
 

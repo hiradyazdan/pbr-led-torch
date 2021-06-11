@@ -74,7 +74,7 @@ class CandleHolder:
         # shader
 
         ri.Pattern('table_shader', 'tableShader', {
-            'string fileName': ['./assets/textures/table.tex']
+            'string fileName': ['./assets/textures/wood.tx']
         })
         ri.Bxdf('PxrDisney', 'woodTexture', {
             'reference color baseColor' : [ 'tableShader:outTexture' ],
@@ -82,14 +82,14 @@ class CandleHolder:
             # 'float reflectionGain' : [0.2]
         })
 
-        DiscRadius2 = 6
+        DiscRadius2 = 10
 
         ri.TransformBegin()
 
-        ri.Translate(0,-3.85,0)
+        ri.Translate(0,-3.9,2)
         ri.Scale(DiscRadius2,DiscRadius2,DiscRadius2)
         ri.Rotate(-90,1,0,0)
-        ri.Disk(0,1,360)
+        ri.Disk(0, 1, theta_max_angle)
 
         ri.TransformEnd()
 
@@ -110,7 +110,7 @@ class CandleHolder:
     ):
         ri = self.ri
 
-        ri.Pattern("surface_body", "surfaceBody", {
+        ri.Pattern('surface_body', 'surfaceBody', {
             'int repeatCount': repeat_count,
             'color surfaceColor': surface_color or [1, 0.9, 0.1],
             'color stripeColor': stripe_color or [0.4, 0.9, 0.1],

@@ -10,7 +10,7 @@ def main(args):
     renderer = Renderer(ri, args)
 
     ri.Option('rib', { 'string asciistyle': 'indented' })
-    ri.Begin(args.rib and renderer.asset_dir_path + args.ribfile + '.rib' or '__render')
+    ri.Begin(args.rib and args.ribfile + '.rib' or '__render')
 
     renderer.setup_scene_description()
 

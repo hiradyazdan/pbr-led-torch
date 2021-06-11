@@ -9,6 +9,12 @@
 
 ### Run
 
+### Command Line Help
+
+```shell
+python ./app.py --help
+```
+
 #### Render to default Framebuffer (it) directly
 
 ```shell
@@ -19,11 +25,5 @@ python ./app.py
 
 ```shell
 python ./app.py --rib
-prman ./assets/candleholder.rib
-```
-
-### Command Line Help
-
-```shell
-python ./app.py --help
+prman ./candleholder.rib
 ```
