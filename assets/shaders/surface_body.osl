@@ -1,0 +1,16 @@
+float stripesHorizontal(int repeatCount, color stripeColor)
+{
+    int stripe = (int) floor(v * repeatCount);
+
+    return (float) (stripe % 2);
+}
+
+shader surfaceBody(
+    int repeatCount = 1,
+	color surfaceColor = 1,
+	color stripeColor = 1,
+    output color outColor = 1
+)
+{
+    outColor = stripesHorizontal(repeatCount, stripeColor) * surfaceColor;
+}
