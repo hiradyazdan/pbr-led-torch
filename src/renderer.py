@@ -3,7 +3,9 @@
 from __future__ import print_function
 
 from src.shader_lib import ShaderLib
+from src.torch import Torch
 from src.candle_holder import CandleHolder
+from src.table import Table
 
 class Renderer:
     def __init__(self, ri, args):
@@ -25,15 +27,15 @@ class Renderer:
         ri.ArchiveRecord(ri.COMMENT, 'DESCRIPTION "Rendering A Candleholder"')
 
         self.shaderLib.load_multiple([
-            'surface_body',
-            # 'top_outer_ring',
-            # 'top_inner_ring',
-            # 'inner_surface',
-            # 'inner_bottom',
+            'button_bumps',
+            'ring_displace',
+            # 'body_lower',
             'table_shader'
         ])
 
         ri.Option('searchpath', { 'string texture': self.texture_dir_path })
+        ri.Option('statistics', { 'filename': ['stats.txt'] } )
+        ri.Option('statistics', { 'endofframe': [1] })
 
         self._setup_display_elements()
         self._setup_integrator()
@@ -101,14 +103,14 @@ class Renderer:
         ri = self.ri
         args = self.args
 
-        tr = translate or [0, -1.5, focal_distance - 1]
-        rt = rotate or [-20, 1, 0, 0]
+        tr_x, tr_y, tr_z = translate or [0, -1.5, focal_distance - 1]
+        rt_angle, rt_x, rt_y, rt_z = rotate or [-20, 1, 0, 0]
 
         ri.Projection(ri.PERSPECTIVE, { ri.FOV: args.fov }) # FOV: 50
         ri.DepthOfField(focal_length * 2, focal_length, focal_distance)
 
-        ri.Translate(tr[0], tr[1], tr[2])
-        ri.Rotate(rt[0], rt[1], rt[2], rt[3])
+        ri.Translate(tr_x, tr_y, tr_z)
+        ri.Rotate(rt_angle, rt_x, rt_y, rt_z)
 
     def _setup_world(self):
         ri = self.ri
@@ -118,7 +120,6 @@ class Renderer:
 
         # HDRI Sourced from:
         # - https://hdrihaven.com/hdri/?c=urban&h=comfy_cafe
-        # - https://hdrihaven.com/hdri/?c=night&h=fireplace
         self._set_environment_map('comfy_cafe_4k.tx')
         self._draw_scene()
 
@@ -155,8 +156,19 @@ class Renderer:
     """
     def _draw_scene(self):
         ri = self.ri
+        originalTorch = Torch(ri)
+        redTorch =   Torch(ri, [50, 0, 1, 0],  [1, -2.9, 0], [.5, 0, 0])
+        greenTorch = Torch(ri, [10, 0, 1, 0],  [-10, -2.9, 0], [0, 0.3, 0])
+        blueTorch =  Torch(ri, [33, 1, -1, 1], [4, -1.55, 0], [0, 0, 0.5])
         candleHolder = CandleHolder(ri)
+        table = Table(ri)
 
-        candleHolder.draw()
+        originalTorch.draw()
+        redTorch.draw()
+        greenTorch.draw()
+        blueTorch.draw()
+        # candleHolder.draw()
+
+        table.draw()
 
         # self.shaderLib.use('test')

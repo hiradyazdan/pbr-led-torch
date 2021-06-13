@@ -1,8 +1,8 @@
 shader tableShader(
-	color Cin = 1,
+	color inColor = 1,
 	string fileName = "",
 	output color outTexture = 0
 )
 {
-    outTexture = (color) texture(fileName, u, v);
+    outTexture = (color) (texture(fileName, u, v) * inColor);
 }

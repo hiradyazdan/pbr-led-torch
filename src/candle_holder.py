@@ -7,18 +7,8 @@ class CandleHolder:
 
         ri.ArchiveRecord(ri.COMMENT, '---- Begin of Candleholder Group ----')
         ri.AttributeBegin()
-        ri.Attribute( 'identifier', { 'name': '' })
-
-        ri.Attribute('displacementbound', {
-            'sphere': [1],
-            'coordinatesystem': ['object']
-        })
 
         self._draw_stripes(100, 'outer-surface')
-        # ri.Displace("PxrDisplace", "disp", {
-        #     "float dispAmount": [0.03],
-        #     "reference float dispScalar": ["diskTx:resultD"]
-        # })
 
         theta_max_angle = 360
 
@@ -27,9 +17,9 @@ class CandleHolder:
         ri.TransformBegin()
 
         ri.Rotate(-90, 1, 0, 0)
-        ri.Translate(0, -2, 0)
+        ri.Translate(0, -2, -.67)
 
-        ri.Scale(1, 1, 2.8)
+        ri.Scale(1, 1, 2.3)
         ri.Sphere(2, -1.4, 0.3, theta_max_angle)
 
         ri.TransformEnd()
@@ -39,23 +29,23 @@ class CandleHolder:
         ri.TransformBegin()
 
         ri.Rotate(90, 1, 0, 0)
-        ri.Translate(0, 2, -1.53)
+        ri.Translate(0, 2, -.71)
         # ri.Scale(1, 1, 1)
         ri.Paraboloid(2, .35, .7, theta_max_angle)
         # ri.Sphere(2, -1.4, 0.3, theta_max_angle)
 
         ri.TransformEnd()
 
-        self._draw_stripes(20, 'inner-surface')
+        self._draw_stripes(60, 'inner-surface')
 
         # Inner Surface
         ri.ArchiveRecord(ri.COMMENT, '-- Inner Surface --')
         ri.TransformBegin()
 
         ri.Rotate(90, 1, 0, 0)
-        ri.Translate(0, 2, -2.1)
+        ri.Translate(0, 2, -1.3)
 
-        ri.Cylinder(1.34, 1, 2, theta_max_angle)
+        ri.Cylinder(1.34, 1, 3, theta_max_angle)
 
         # Top Inner Ring
         ri.ArchiveRecord(ri.COMMENT, '-- Top Inner Ring --')
@@ -68,41 +58,6 @@ class CandleHolder:
         ri.AttributeEnd()
         ri.ArchiveRecord(ri.COMMENT, '---- End of Candleholder Group ----')
 
-        ri.ArchiveRecord(ri.COMMENT, '---- Begin of Table Group ----')
-        ri.AttributeBegin()
-        ri.Attribute('identifier', { 'name': 'table-surface' })
-        # shader
-
-        ri.Pattern('table_shader', 'tableShader', {
-            'string fileName': ['./assets/textures/wood.tx']
-        })
-        ri.Bxdf('PxrDisney', 'woodTexture', {
-            'reference color baseColor' : [ 'tableShader:outTexture' ],
-            # 'int diffuseDoubleSided' : [1],
-            # 'float reflectionGain' : [0.2]
-        })
-
-        DiscRadius2 = 10
-
-        ri.TransformBegin()
-
-        ri.Translate(0,-3.9,2)
-        ri.Scale(DiscRadius2,DiscRadius2,DiscRadius2)
-        ri.Rotate(-90,1,0,0)
-        ri.Disk(0, 1, theta_max_angle)
-
-        ri.TransformEnd()
-
-        ri.TransformBegin()
-
-        # ri.Translate(0,-3.85,0)
-        # ri.Rotate(-90,1,0,0)
-        # ri.Cylinder (6, -1, 0, 360)
-
-        ri.TransformEnd()
-        ri.AttributeEnd()
-        ri.ArchiveRecord(ri.COMMENT, '---- End of Table Group ----')
-
     def _draw_stripes(
         self,
         repeat_count, bxdf_label,
@@ -110,10 +65,17 @@ class CandleHolder:
     ):
         ri = self.ri
 
+        ri.Attribute( 'identifier', { 'name': '' })
+
+        ri.Attribute('displacementbound', {
+            'sphere': [1],
+            'coordinatesystem': ['object']
+        })
+
         ri.Pattern('surface_body', 'surfaceBody', {
-            'int repeatCount': repeat_count,
-            'color surfaceColor': surface_color or [1, 0.9, 0.1],
-            'color stripeColor': stripe_color or [0.4, 0.9, 0.1],
+            'int stripeCount': repeat_count,
+            'color surfaceColor': surface_color or [.2, 0.02, 0],
+            'color stripeColor': stripe_color or [.2, 0, 0]
         })
         # ri.Displace('PxrDisplace', 'myDisp', {
         #     'float dispAmount': [12],
@@ -122,6 +84,19 @@ class CandleHolder:
         ri.Bxdf('PxrDisney', bxdf_label, {
             'reference color baseColor': ['surfaceBody:outColor']
         })
+
+        # ri.Attribute('trace', {
+        #     'constant int maxspeculardepth': [6]
+        # })
+        # ri.Attribute('visibility', {
+        #     'constant int transmission': [1],
+        #     'constant int indirect': [1]
+        # })
+        # ri.Bxdf('PxrLMGlass', 'glass', {
+        #     'color reflectionColor': [0.4891, 0.7303, 0.7759],
+        #     'color refractionColor': [0.9, 0.9, 0.9],
+        #     'int shadows': [1]
+        # })
 
     def _draw_round_surface(self, scale, sphere):
         ri = self.ri

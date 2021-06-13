@@ -1,0 +1,31 @@
+shader buttonBumps
+(
+    float frequency = 5,
+    float radius = 0.4,
+    float fuzz = 0,
+
+    output float resultF = 1
+)
+{
+    float s = mod(frequency * u, 1);
+    float t = mod(frequency * v, 1);
+
+    point centre = point(0.5, 0.5, 0);
+    point here = point(s, t, 0);
+
+    float dist = distance(centre, here);
+
+    float rad = (float) noise(
+        "cell",
+        frequency * u,
+        frequency * v
+    ) * radius;
+
+    float inDisk = 1 - smoothstep(
+        rad - fuzz,
+        rad + fuzz,
+        dist
+    );
+
+    resultF = inDisk;
+}

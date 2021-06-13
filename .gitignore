@@ -13,3 +13,4 @@ venv/
 *.oso
 *.rib
 render/*.exr
+stats.txt

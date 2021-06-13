@@ -15,15 +15,26 @@
 python ./app.py --help
 ```
 
-#### Render to default Framebuffer (it) directly
-
-```shell
-python ./app.py
-```
-
 #### Output to "rib file" and render
 
 ```shell
 python ./app.py --rib
 prman ./candleholder.rib
 ```
+
+#### Render to default Framebuffer (it) directly
+
+```shell
+python ./app.py
+```
+
+### Render to exr
+
+```shell
+python ./app.py -o exr
+```
+
+#### Note:
+
+***Saving from image tool to jpeg or png requires the `Burn In Mapping On Save`
+to be selected from `Catalog` tab, otherwise the saved image will be dark.***

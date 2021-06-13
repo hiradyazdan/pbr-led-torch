@@ -1,0 +1,16 @@
+shader displaceRing
+(
+    float s = 0 [[int lockgeom = 0]],
+    float t = 0 [[int lockgeom = 0]],
+
+    int patternCount = 10,
+
+    output float resultF = 0
+)
+{
+    //float phase = 1;
+    //float cycles = 20;
+    //float hump = (sin ((s - phase/cycles) * 5 * cycles) + 1.0) * 0.5;
+
+    resultF = mod (s * patternCount, .5);
+}

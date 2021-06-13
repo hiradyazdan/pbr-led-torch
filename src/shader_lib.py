@@ -8,6 +8,7 @@ class ShaderLib:
         self.compiler = 'oslc'
         self.file_ext = '.osl'
         self.obj_ext  = '.oso'
+        self.has_search_path = False
 
         self.ri = ri
 
@@ -19,7 +20,9 @@ class ShaderLib:
         ri = self.ri
         compiled_dir_path = self.compiled_dir_path
 
-        ri.Option('searchpath', { 'string shader': compiled_dir_path })
+        if not self.has_search_path:
+            ri.Option('searchpath', { 'string shader': compiled_dir_path })
+            self.has_search_path = True
 
         if self._is_compiled(shader_name) != True or self._is_changed(shader_name) > 0:
             print('compiling shader %s' %(shader_name))
@@ -33,11 +36,11 @@ class ShaderLib:
             except subprocess.CalledProcessError:
                 sys.exit('shader compilation failed')
 
-    def use(self, file_name, name, params = None):
-        ri = self.ri
-
-        ri.Pattern(file_name, name, params or {})
-        ri.Bxdf('PxrSurface', '') # material
+    # def use(self, file_name, name, params = None):
+    #     ri = self.ri
+    #
+    #     ri.Pattern(file_name, name, params or {})
+    #     # ri.Bxdf('PxrSurface', bxdf_label, bxdf_params or {}) # material
 
 ####################
 # PRIVATE METHODS

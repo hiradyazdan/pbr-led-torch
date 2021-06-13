@@ -1,0 +1,30 @@
+shader lowerBody
+(
+    color diskColor = color(1,1,1),
+    color surfaceColor = color(0,0,0),
+    point center = point(0.5,0.5,0.0),
+    float fuzz=0.025,
+    float radius = 0.5,
+    float repeatU=1.0,
+    float repeatV=1.0,
+    float s=0 [[int lockgeom = 0]],
+    float t=0 [[int lockgeom = 0]],
+    float repeatCount=10,
+
+    output color outColor = 1
+)
+{
+    float uu=mod(repeatU * s, 1.0);
+    float vv=mod(repeatV * t, 1.0);
+
+    point here = point (uu, vv, 0);
+
+    float dist = distance(center, here);
+    float inDisk = 1 - smoothstep(
+        radius / 2.0 - fuzz,
+        radius / 2.0 + fuzz,
+        dist
+    );
+
+    outColor = mix(surfaceColor, diskColor, inDisk);
+}
