@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from src.shader_lib import ShaderLib
 from src.torch import Torch
-from src.candle_holder import CandleHolder
+# from src.candle_holder import CandleHolder
 from src.table import Table
 
 class Renderer:
@@ -29,7 +29,7 @@ class Renderer:
         self.shaderLib.load_multiple([
             'button_bumps',
             'ring_displace',
-            # 'body_lower',
+            'body_lower',
             'table_shader'
         ])
 
@@ -160,7 +160,7 @@ class Renderer:
         redTorch =   Torch(ri, [50, 0, 1, 0],  [1, -2.9, 0], [.5, 0, 0])
         greenTorch = Torch(ri, [10, 0, 1, 0],  [-10, -2.9, 0], [0, 0.3, 0])
         blueTorch =  Torch(ri, [33, 1, -1, 1], [4, -1.55, 0], [0, 0, 0.5])
-        candleHolder = CandleHolder(ri)
+        # candleHolder = CandleHolder(ri)
         table = Table(ri)
 
         originalTorch.draw()

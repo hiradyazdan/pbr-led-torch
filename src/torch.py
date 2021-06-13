@@ -132,7 +132,7 @@ class Torch:
 
         ri.AttributeEnd()
 
-    def _draw_upper_ring_cap(self, translate_z):
+    def _draw_ring_cap(self, translate_z):
         ri = self.ri
 
         ri.AttributeBegin()
@@ -157,7 +157,7 @@ class Torch:
     def _draw_upper_ring(self):
         ri = self.ri
 
-        self._draw_upper_ring_cap(self.tr_z + .6)
+        self._draw_ring_cap(self.tr_z + .6)
 
         ri.AttributeBegin()
         ri.ArchiveRecord(ri.COMMENT, '-- Upper Ring --')
@@ -181,7 +181,7 @@ class Torch:
         ri.TransformBegin()
 
         ri.Rotate(self.rt_angle, self.rt_x, self.rt_y, self.rt_z)
-        ri.Translate(self.tr_x, self.tr_y, self.tr_z - .3) # z = -3.7
+        ri.Translate(self.tr_x, self.tr_y, self.tr_z - .3)
         ri.Cylinder(1, .9, 2, self.theta_max_angle)
 
         ri.TransformEnd()
@@ -195,31 +195,15 @@ class Torch:
         ri.ArchiveRecord(ri.COMMENT, '-- Main Body --')
         ri.Attribute( 'identifier', { 'name': 'main-body' })
 
-        # ri.Attribute('displacementbound', {
-        #     'sphere': [1],
-        #     'coordinatesystem': ['object']
-        # })
-
-        ri.Pattern('body_shaft', 'shaft', {
-            # 'float repeatU': [10],
-            # 'float repeatV': [3],
-            # 'float radius': [0.2],
-            'color surfaceColor': self.surface_color,
-            # 'color diskColor': [1, 1, 1]
-        })
-        # ri.Displace('PxrDisplace', 'myDisp', {
-        #     'float dispAmount': [12],
-        #     'reference float dispScalar': ['diskTx:resultF']
-        # })
         ri.Bxdf('PxrDisney', 'bxdf_label', {
-            'reference color baseColor': ['shaft:outColor'],
+            'color baseColor': self.surface_color,
             "float metallic" : [1]
         })
 
         ri.TransformBegin()
 
         ri.Rotate(self.rt_angle, self.rt_x, self.rt_y, self.rt_z)
-        ri.Translate(self.tr_x, self.tr_y, self.tr_z - .6) # z = -4
+        ri.Translate(self.tr_x, self.tr_y, self.tr_z - .6)
         ri.Cylinder(1, .9, 6, self.theta_max_angle)
 
         ri.TransformEnd()
@@ -229,7 +213,7 @@ class Torch:
     def _draw_lower_body(self):
         ri = self.ri
 
-        self._draw_upper_ring_cap(self.tr_z + 4.9) # 1.5
+        self._draw_ring_cap(self.tr_z + 4.9)
 
         ri.AttributeBegin()
         ri.ArchiveRecord(ri.COMMENT, '-- Lower Body --')
@@ -241,21 +225,22 @@ class Torch:
         })
 
         ri.Pattern('ring_displace', 'lowerRingTx')
-        # ri.Pattern('body_lower', 'torchBody', {
-        #     'float repeatU': [10],
-        #     'float repeatV': [3],
-        #     'float fuzz': [0],
-        #     'float radius': [0.2],
-        #     'color surfaceColor': self.surface_color,
-        #     'color diskColor': [1, 1, 1]
-        # })
+        ri.Pattern('body_lower', 'dashLines', {
+            'color surfaceColor': self.surface_color,
+            'color dashColor': [1, 1, 1],
+            'float sWidth': [.7],
+            'float tWidth': [.2],
+            'float sRepeat': [12],
+            'float tRepeat': [3],
+        })
         ri.Displace('PxrDisplace', 'myDisp', {
             'float dispAmount': [.1],
             'reference float dispScalar': ['lowerRingTx:resultF']
         })
         ri.Bxdf('PxrDisney', 'bxdf_label', {
-            'color baseColor': self.surface_color,#['torchBody:outColor'],
-            'float metallic': [1]
+            'reference color baseColor': ['dashLines:outColor'],
+            'float metallic': [1],
+
         })
 
         ri.TransformBegin()

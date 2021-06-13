@@ -9,7 +9,7 @@ def cli_args():
     parser.add_argument('--pixelvar',    '-p',
                         nargs='?', const=0.01,            default=0.01,           type=float, help='pixel variance default 0.01')
     parser.add_argument('--fov',         '-fv',
-                        nargs='?', const=50.0,            default=90.0,           type=float, help='projection fov default 50.0')
+                        nargs='?', const=50.0,            default=50.0,           type=float, help='projection fov default 50.0')
     parser.add_argument('--width',       '-wd',
                         nargs='?', const=1920,            default=1920,           type=int,   help='width of image default 1920')
     parser.add_argument('--height',      '-ht',

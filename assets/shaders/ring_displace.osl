@@ -3,7 +3,7 @@ shader displaceRing
     float s = 0 [[int lockgeom = 0]],
     float t = 0 [[int lockgeom = 0]],
 
-    int patternCount = 10,
+    int patternCount = 8,
 
     output float resultF = 0
 )
