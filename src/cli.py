@@ -2,7 +2,7 @@ import argparse
 
 # Modified from Jon Macey's https://github.com/NCCA/Renderman
 def cli_args():
-    parser = argparse.ArgumentParser(description='Modify Render Parameters for CandleHolder')
+    parser = argparse.ArgumentParser(description='Modify Render Parameters for LED Torch')
 
     parser.add_argument('--shadingrate', '-s',
                         nargs='?', const=0.1,             default=0.1,            type=float, help='shading rate default to 0.1')

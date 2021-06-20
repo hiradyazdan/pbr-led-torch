@@ -1,5 +1,10 @@
 # sr-rendering
 
+## Rendered Scenes
+
+![Scene1](./render/scene.jpg)
+![Scene1](./render/scene_2.jpg)
+
 ## Requirements
 
 - Python 2.7
@@ -9,7 +14,7 @@
 
 ### Run
 
-### Command Line Help
+#### Command Line Help
 
 ```shell
 python ./app.py --help
@@ -19,7 +24,7 @@ python ./app.py --help
 
 ```shell
 python ./app.py --rib
-prman ./candleholder.rib
+prman ./scene.rib
 ```
 
 #### Render to default Framebuffer (it) directly

@@ -24,7 +24,7 @@ class Renderer:
         args = self.args
 
         ri.ArchiveRecord(ri.COMMENT, 'VERSION 0.0.1')
-        ri.ArchiveRecord(ri.COMMENT, 'DESCRIPTION "Rendering A Candleholder"')
+        ri.ArchiveRecord(ri.COMMENT, 'DESCRIPTION "Rendering LED Torch"')
 
         self.shaderLib.load_multiple([
             'button_bumps',
@@ -84,7 +84,12 @@ class Renderer:
     # Modified from Jon Macey's https://github.com/NCCA/Renderman
     def _set_integrator(self):
         args = self.args
-        arg = args.default or args.vcm or args.direct or args.wire or args.normals or args.st or 0
+        arg = args.default or \
+              args.vcm or \
+              args.direct or \
+              args.wire or \
+              args.normals or \
+              args.st or 0
 
         return {
             args.default : { 'name': 'PxrDefault',        'params': {} },
@@ -157,9 +162,9 @@ class Renderer:
     def _draw_scene(self):
         ri = self.ri
         originalTorch = Torch(ri)
-        redTorch =   Torch(ri, [50, 0, 1, 0],  [1, -2.9, 0], [.5, 0, 0])
-        greenTorch = Torch(ri, [10, 0, 1, 0],  [-10, -2.9, 0], [0, 0.3, 0])
-        blueTorch =  Torch(ri, [33, 1, -1, 1], [4, -1.55, 0], [0, 0, 0.5])
+        redTorch      = Torch(ri, [50, 0, 1, 0],  [1, -2.9, 0],   [.5, 0, 0])
+        greenTorch    = Torch(ri, [10, 0, 1, 0],  [-10, -2.9, 0], [0, 0.3, 0])
+        blueTorch     = Torch(ri, [33, 1, -1, 1], [4, -1.55, 0],  [0, 0, 0.5])
         # candleHolder = CandleHolder(ri)
         table = Table(ri)
 
@@ -170,5 +175,3 @@ class Renderer:
         # candleHolder.draw()
 
         table.draw()
-
-        # self.shaderLib.use('test')
